@@ -9,6 +9,16 @@ export async function getJSON(path) {
   return res.json();
 }
 
+// Bootstrap snapshots are large, so fetch lazily and cache (PLAYERS + TRANSFERS share one).
+const _bootCache = {};
+export function getBootstrap(season, gw) {
+  const key = `${season}/${gw}`;
+  if (!_bootCache[key]) {
+    _bootCache[key] = getJSON(`/data/${season}/bootstrap/Gameweek_${gw}.json`);
+  }
+  return _bootCache[key];
+}
+
 export const fmtTime = (iso) => {
   if (!iso) return '--:--';
   const d = new Date(iso);
@@ -19,7 +29,6 @@ export const fmtTime = (iso) => {
 };
 
 export const fmtSeason = (s) => (s && s.length === 4 ? `${s.slice(0, 2)}/${s.slice(2)}` : s);
-
 export const fmtRank = (n) => (n == null ? '—' : n.toLocaleString('en-GB'));
 
 export function Move({ m }) {
@@ -42,6 +51,25 @@ export function CommandBar({ season, clock, sub }) {
         <span>SEASON <b>{fmtSeason(season)}</b></span>
         <span><b>{clock}</b></span>
       </span>
+    </div>
+  );
+}
+
+const TABS = [
+  ['', 'MEMB'],
+  ['players', 'PLAY'],
+  ['transfers', 'XFER'],
+  ['news', 'NEWS'],
+];
+
+export function Nav({ active }) {
+  return (
+    <div className="tabs">
+      {TABS.map(([h, label], i) => (
+        <a key={h} className={`tab ${active === h ? 'on' : ''}`} href={`#/${h}`}>
+          <span className="n">{i + 1}</span>{label}
+        </a>
+      ))}
     </div>
   );
 }

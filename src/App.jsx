@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { getJSON, CommandBar } from './lib.jsx';
-import LeagueView from './LeagueView.jsx';
-import ManagerView from './ManagerView.jsx';
+import { getJSON, CommandBar, Nav } from './lib.jsx';
+import LeagueView from './leagueview.jsx';
+import ManagerView from './managerview.jsx';
+import PlayersView from './playersview.jsx';
+import TransfersView from './transfersview.jsx';
+import NewsView from './newsview.jsx';
 
 function useHashRoute() {
   const [hash, setHash] = useState(window.location.hash);
@@ -12,6 +15,15 @@ function useHashRoute() {
     return () => window.removeEventListener('hashchange', on);
   }, []);
   return hash;
+}
+
+function parseRoute(hash) {
+  const mm = hash.match(/^#\/manager\/(\d+)/);
+  if (mm) return { view: 'manager', entry: mm[1] };
+  if (hash.startsWith('#/players')) return { view: 'players' };
+  if (hash.startsWith('#/transfers')) return { view: 'transfers' };
+  if (hash.startsWith('#/news')) return { view: 'news' };
+  return { view: 'standings' };
 }
 
 export default function App() {
@@ -50,20 +62,29 @@ export default function App() {
   const { status, league, feed } = data;
   const managers = [...(league.managers || [])].sort((a, b) => (b.total || 0) - (a.total || 0));
 
-  const match = hash.match(/^#\/manager\/(\d+)/);
-  const selected = match ? managers.find((m) => String(m.entry) === match[1]) : null;
+  const route = parseRoute(hash);
+  const selected = route.view === 'manager' ? managers.find((m) => String(m.entry) === route.entry) : null;
+  const showManager = route.view === 'manager' && selected;
+  const activeNav = ['players', 'transfers', 'news'].includes(route.view) ? route.view : '';
 
   return (
     <div className="term">
       <CommandBar
         season={status.season}
         clock={clock}
-        sub={selected ? `${selected.manager.toUpperCase()} <EQUITY>` : undefined}
+        sub={showManager ? `${selected.manager.toUpperCase()} <EQUITY>` : undefined}
       />
-      {selected ? (
+      {!showManager && <Nav active={activeNav} />}
+      {showManager ? (
         <ManagerView manager={selected} rank={managers.indexOf(selected) + 1} status={status} />
+      ) : route.view === 'players' ? (
+        <PlayersView season={status.season} gw={status.current_gw} />
+      ) : route.view === 'transfers' ? (
+        <TransfersView season={status.season} gw={status.current_gw} />
+      ) : route.view === 'news' ? (
+        <NewsView feed={feed} />
       ) : (
-        <LeagueView status={status} league={league} managers={managers} feed={feed} />
+        <LeagueView status={status} league={league} managers={managers} />
       )}
     </div>
   );
