@@ -3,6 +3,7 @@ import './App.css';
 import { getJSON, CommandBar, Nav } from './lib.jsx';
 import LeagueView from './leagueview.jsx';
 import ManagerView from './managerview.jsx';
+import ReportView from './reportview.jsx';
 import NewsView from './newsview.jsx';
 
 function useHashRoute() {
@@ -18,6 +19,7 @@ function useHashRoute() {
 function parseRoute(hash) {
   const mm = hash.match(/^#\/manager\/(\d+)/);
   if (mm) return { view: 'manager', entry: mm[1] };
+  if (hash.startsWith('#/report')) return { view: 'report' };
   if (hash.startsWith('#/news')) return { view: 'news' };
   return { view: 'standings' };
 }
@@ -61,7 +63,7 @@ export default function App() {
   const route = parseRoute(hash);
   const selected = route.view === 'manager' ? managers.find((m) => String(m.entry) === route.entry) : null;
   const showManager = route.view === 'manager' && selected;
-  const activeNav = route.view === 'news' ? route.view : '';
+  const activeNav = ['report', 'news'].includes(route.view) ? route.view : '';
 
   return (
     <div className="term">
@@ -73,6 +75,8 @@ export default function App() {
       {!showManager && <Nav active={activeNav} />}
       {showManager ? (
         <ManagerView manager={selected} rank={managers.indexOf(selected) + 1} status={status} />
+      ) : route.view === 'report' ? (
+        <ReportView status={status} />
       ) : route.view === 'news' ? (
         <NewsView feed={feed} />
       ) : (

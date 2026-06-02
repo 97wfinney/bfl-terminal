@@ -57,6 +57,7 @@ export function CommandBar({ season, clock, sub }) {
 
 const TABS = [
   ['', 'MEMB'],
+  ['report', 'RPRT'],
   ['news', 'NEWS'],
 ];
 

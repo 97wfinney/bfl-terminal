@@ -8,6 +8,52 @@ import OwnerPanels from './ownerpanels.jsx';
 
 const CHIP_SHORT = { wildcard: 'WC', freehit: 'FH', bboost: 'BB', '3xc': 'TC', manager: 'AM' };
 
+// "Story of the week" panel — sits in the main column, directly below the
+// standings table. Lazy-fetches the latest recap; degrades gracefully.
+function RecapPanel({ status }) {
+  const [recap, setRecap] = useState(null); // null = loading, undefined = missing/404
+  useEffect(() => {
+    let alive = true;
+    setRecap(null);
+    getJSON(`/data/${status.season}/reports/recap.json`)
+      .then((d) => { if (alive) setRecap(d); })
+      .catch(() => { if (alive) setRecap(undefined); });
+    return () => { alive = false; };
+  }, [status.season]);
+
+  const head = (
+    <div className="phead"><span className="recapdot">●</span> LEAGUE REPORT
+      <span className="meta">{recap?.gw != null ? `STORY OF GW${recap.gw}` : 'STORY OF THE WEEK'}</span>
+    </div>
+  );
+
+  if (recap === null) return <div className="panel recap">{head}<div className="empty">LOADING…</div></div>;
+  if (!recap || !recap.headline) return <div className="panel recap">{head}<div className="empty">REPORT PENDING</div></div>;
+
+  const f = recap.facts || {};
+  const motw = f.gameweek?.manager_of_week;
+  const genius = f.captaincy?.genius;
+  const bench = f.bench_agony;
+
+  return (
+    <div className="panel recap">
+      {head}
+      <div className="recapbody">
+        <h2 className="recaphl">{recap.headline}</h2>
+        {recap.summary && <p className="recapsum">{recap.summary}</p>}
+        {(motw || genius || bench) && (
+          <div className="recapchips">
+            {motw && <span className="rchip"><b>MOTW</b> {motw.manager} · {motw.net}</span>}
+            {genius && <span className="rchip"><b>CAPT</b> {genius.manager} · {genius.web_name} {genius.points}{genius.multiplier ? `×${genius.multiplier}` : ''}</span>}
+            {bench && <span className="rchip"><b>BENCH</b> {bench.manager} · {bench.bench_points}</span>}
+          </div>
+        )}
+        <a className="recaplink" href="#/report">READ FULL REPORT →</a>
+      </div>
+    </div>
+  );
+}
+
 export default function LeagueView({ status, league, managers }) {
   // Tier-2 panels fill in once the (large) bootstrap snapshot arrives; the page
   // never blocks on it.
@@ -57,7 +103,8 @@ export default function LeagueView({ status, league, managers }) {
 
       {/* standings (main anchor) + rail of stacked mini-panels */}
       <div className="homegrid">
-        <div className="panel l grow">
+        <div className="maincol">
+        <div className="panel">
           <div className="phead">MEMB <span className="meta">LEAGUE STANDINGS · BY TOTAL</span></div>
           <table>
             <thead>
@@ -98,12 +145,16 @@ export default function LeagueView({ status, league, managers }) {
             </tbody>
           </table>
         </div>
+          <RecapPanel status={status} />
+          {/* HITS + BENCH live here (not the rail) so the main column's height
+              balances the tall rail and no gap opens under the table. */}
+          <HitsBoard managers={managers} />
+          <BenchWaste managers={managers} />
+        </div>
 
         <div className="rail">
           <FormTable managers={managers} />
           <ClosestBattles managers={managers} />
-          <HitsBoard managers={managers} />
-          <BenchWaste managers={managers} />
           <ChipLog managers={managers} />
         </div>
       </div>

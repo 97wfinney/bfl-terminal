@@ -222,9 +222,88 @@ tr:hover td { background: var(--sel); }
 
 /* ---------- home grid: standings + rail ---------- */
 .homegrid { display: grid; grid-template-columns: 1.6fr 1fr; }
+.maincol { display: flex; flex-direction: column; min-width: 0; border-right: 1px solid var(--line2); }
 .rail { display: flex; flex-direction: column; min-width: 0; }
 .rail .panel:last-child { border-bottom: 1px solid var(--line2); }
-@media (max-width: 880px) { .homegrid { grid-template-columns: 1fr; } .homegrid .panel.l { border-right: none; } }
+@media (max-width: 880px) { .homegrid { grid-template-columns: 1fr; } .homegrid .panel.l { border-right: none; } .maincol { border-right: none; } }
+
+/* ---------- homepage recap panel (story of the week) ---------- */
+.recap { border-top: 2px solid var(--amber-d); }
+/* The two homepage columns hold long per-manager lists of differing length.
+   Let the last panel in each column stretch to absorb any leftover height, so
+   when one column is taller the other bottom-aligns with framed space instead
+   of leaving a raw gap between the table and what follows. */
+.maincol > .panel:last-child, .rail > .panel:last-child { flex: 1 1 auto; }
+.recap .recapdot { color: var(--green); font-size: 8px; animation: pulse 2s infinite; }
+.recapbody { padding: 14px 16px 18px; max-width: 78ch; }
+.recaphl { color: var(--amber); font-size: 17px; font-weight: 700; line-height: 1.3; letter-spacing: .2px; margin: 0 0 10px; }
+.recapsum { color: var(--white); font-size: 12.5px; line-height: 1.7; margin: 0 0 14px; }
+.recapchips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.rchip { font-size: 9.5px; color: var(--bone); border: 1px solid var(--line2); padding: 3px 8px; letter-spacing: .3px; white-space: nowrap; }
+.rchip b { color: var(--amber); font-weight: 700; margin-right: 6px; letter-spacing: .5px; }
+.recaplink { display: inline-block; color: #000; background: var(--amber); font-weight: 700; font-size: 11px; letter-spacing: .8px; padding: 6px 14px; text-decoration: none; }
+.recaplink:hover { background: #ffd400; }
+
+/* ---------- weekly report page ---------- */
+.rptname small { text-transform: uppercase; }
+.gwswitch { display: flex; align-items: center; gap: 6px; }
+.gwbtn { background: #0a0a0a; border: 1px solid var(--line2); color: var(--amber); font-family: inherit; font-size: 11px; font-weight: 700; padding: 4px 9px; cursor: pointer; }
+.gwbtn:hover:not(:disabled) { background: var(--sel); }
+.gwbtn:disabled { color: var(--grey-d); cursor: default; }
+.gwsel { background: #0a0a0a; border: 1px solid var(--line2); color: var(--bone); font-family: inherit; font-size: 11px; font-weight: 600; padding: 4px 8px; letter-spacing: .4px; cursor: pointer; }
+
+.rptprose { border-bottom: 1px solid var(--line2); }
+.rptbody { padding: 14px 16px 20px; max-width: 74ch; }
+.rptbody p { color: var(--white); font-size: 13px; line-height: 1.8; margin: 0 0 14px; }
+.rptbody p:last-child { margin-bottom: 0; }
+.rptbody .rptempty { color: var(--grey); }
+
+.rcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); border-bottom: 1px solid var(--line2); }
+.rcard { border-right: 1px solid var(--line2); border-bottom: 1px solid var(--line2); padding: 10px 13px 13px; min-width: 0; }
+.rch { display: flex; align-items: baseline; gap: 8px; border-bottom: 1px dotted #1a1a1a; padding-bottom: 7px; margin-bottom: 9px; }
+.rtag { color: var(--grey); font-size: 9px; font-weight: 700; }
+.rtitle { color: var(--amber); font-size: 10.5px; font-weight: 700; letter-spacing: 1px; }
+.rcbody { font-size: 11.5px; }
+
+.rlead { color: var(--bone); font-size: 13px; font-weight: 700; line-height: 1.4; }
+.rlead .team { color: var(--grey); font-size: 9.5px; font-weight: 500; }
+.rlead .tot { color: var(--bone); }
+.rflag { display: inline-block; background: var(--green); color: #000; font-size: 8px; font-weight: 700; letter-spacing: .5px; padding: 1px 5px; margin-left: 6px; vertical-align: middle; }
+.rbig { color: var(--bone); font-size: 26px; font-weight: 700; line-height: 1.1; margin: 6px 0 2px; }
+.rbig.up { color: var(--green); }
+.rbig.dn { color: var(--red); }
+.rbig .ru { color: var(--grey); font-size: 9px; font-weight: 500; margin-left: 6px; letter-spacing: .5px; }
+.rsub { color: var(--grey); font-size: 10px; letter-spacing: .3px; margin-top: 2px; }
+
+.rlist { margin-top: 6px; }
+.rrow { display: grid; grid-template-columns: 16px 1fr auto auto; gap: 8px; align-items: baseline; padding: 3px 0; border-bottom: 1px dotted #141414; }
+.rrow .rrk { color: var(--grey); font-size: 9.5px; text-align: right; }
+.rwho { color: var(--bone); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.rwho small { color: var(--grey); font-size: 9px; margin-left: 5px; }
+.rmv { font-size: 10px; }
+.rrow .tot { font-size: 11px; }
+
+.rkv { display: grid; grid-template-columns: 76px 1fr; gap: 8px; align-items: baseline; padding: 3px 0; border-bottom: 1px dotted #141414; }
+.rkv:last-child { border-bottom: none; }
+.rk { color: var(--grey); font-size: 9px; font-weight: 700; letter-spacing: .5px; }
+.rk.g { color: var(--green); }
+.rk.r { color: var(--red); }
+.rk.a { color: var(--amber); }
+.rv { color: var(--bone); font-size: 11px; overflow: hidden; text-overflow: ellipsis; }
+.rv b { font-weight: 700; }
+
+.drowr { display: grid; grid-template-columns: 1fr auto; gap: 6px 8px; align-items: baseline; padding: 4px 0; border-bottom: 1px dotted #141414; }
+.drowr .rowners { grid-column: 1 / -1; color: var(--amber); font-size: 9.5px; letter-spacing: .3px; }
+
+.rrem { display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline; margin-top: 9px; padding-top: 8px; border-top: 1px dotted #1a1a1a; }
+.rrem span { color: var(--grey); font-size: 10px; letter-spacing: .5px; }
+.rrem b { color: var(--bone); font-size: 13px; font-weight: 700; margin-left: 3px; }
+.rremlbl { margin-left: auto; color: var(--grey-d); font-size: 8.5px; }
+
+@media (max-width: 560px) {
+  .rcards { grid-template-columns: 1fr; }
+  .gwswitch { flex-wrap: wrap; }
+}
 
 /* sparkline in standings */
 .trend { width: 70px; }
