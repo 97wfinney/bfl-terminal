@@ -151,3 +151,79 @@ tr:hover td { background: var(--sel); }
 /* ---------- states ---------- */
 .screen { display: flex; align-items: center; justify-content: center; height: 100vh; color: var(--amber); letter-spacing: 1px; }
 .screen.err { color: var(--red); }
+
+/* ================= HOME DASHBOARD ================= */
+
+/* ---------- pulse band (Tier 1 headline stats) ---------- */
+.pulse { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); border-bottom: 2px solid var(--amber-d); }
+.pcard { padding: 7px 11px; border-right: 1px solid var(--line2); border-bottom: 1px solid var(--line2); min-width: 0; }
+.pcard .lbl { color: var(--amber); font-size: 9px; font-weight: 700; letter-spacing: 1px; }
+.pcard .big { color: var(--bone); font-size: 15px; font-weight: 700; margin-top: 3px; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pcard .big.up { color: var(--green); }
+.pcard .big.dn { color: var(--red); }
+.pcard .sub { color: var(--grey); font-size: 9.5px; margin-top: 3px; letter-spacing: .3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pcard .sub b { color: var(--white); font-weight: 600; }
+.pcard .sub b.up { color: var(--green); }
+.pcard.lead { background: #0d0a02; }
+
+/* ---------- home grid: standings + rail ---------- */
+.homegrid { display: grid; grid-template-columns: 1.6fr 1fr; }
+.rail { display: flex; flex-direction: column; min-width: 0; }
+.rail .panel:last-child { border-bottom: 1px solid var(--line2); }
+@media (max-width: 880px) { .homegrid { grid-template-columns: 1fr; } .homegrid .panel.l { border-right: none; } }
+
+/* sparkline in standings */
+.trend { width: 70px; }
+.spark { width: 64px; height: 16px; vertical-align: middle; display: inline-block; }
+.spark polyline { fill: none; stroke: var(--amber); stroke-width: 1.3; opacity: .85; }
+
+/* ---------- mini rank lists (form / hits / bench / prices / value) ---------- */
+.mini { padding: 2px 0; }
+.mrow { display: grid; grid-template-columns: 16px 1fr auto; gap: 8px; align-items: baseline; padding: 3px 10px; border-bottom: 1px dotted #141414; }
+.mini.price .mrow { grid-template-columns: 1fr auto auto; }
+.mrow .pos { color: var(--grey); font-size: 9.5px; text-align: right; }
+.mrow .who { color: var(--bone); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.mrow .who small { color: var(--grey); font-size: 9px; margin-left: 5px; letter-spacing: .3px; }
+.mrow .val { font-weight: 700; font-size: 11px; color: var(--bone); white-space: nowrap; }
+.mrow .val.up { color: var(--green); }
+.mrow .val.dn { color: var(--red); }
+.mrow .val.flat { color: var(--grey); }
+
+/* ---------- closest battles ---------- */
+.battle { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; padding: 5px 10px; border-bottom: 1px dotted #141414; font-size: 10.5px; }
+.battle .a { text-align: right; color: var(--bone); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.battle .b { color: var(--bone); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.battle .gapv { color: var(--amber); font-weight: 700; padding: 1px 6px; border: 1px solid var(--line2); font-size: 9px; white-space: nowrap; letter-spacing: .5px; }
+
+/* ---------- chip log ---------- */
+.cl { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 5px 10px; border-bottom: 1px dotted #141414; }
+.cl .who { color: var(--bone); font-size: 10.5px; min-width: 96px; flex: 1; }
+.cl .badge { color: #000; background: var(--amber); padding: 1px 5px; font-size: 9px; font-weight: 700; letter-spacing: .5px; }
+
+/* ---------- gameweek summary strip ---------- */
+.gwstrip { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.gwstrip .g { padding: 7px 11px; border-right: 1px solid var(--line2); border-bottom: 1px solid var(--line2); min-width: 0; }
+.gwstrip .g .lbl { color: var(--grey); font-size: 9px; letter-spacing: .6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gwstrip .g .v { color: var(--bone); font-size: 14px; font-weight: 700; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gwstrip .g .v small { color: var(--grey); font-size: 9px; font-weight: 500; margin-left: 5px; }
+.gwstrip .g.dl .v { color: var(--green); letter-spacing: .5px; }
+.gwstrip .g .v.chipline2 { font-size: 11px; display: flex; flex-wrap: wrap; gap: 8px; }
+.gwstrip .g .v.chipline2 span { color: var(--amber); }
+.gwstrip .g .v.chipline2 small { color: var(--grey); }
+
+/* ---------- two-column panels (prices / form&value) ---------- */
+.twocol { display: grid; grid-template-columns: 1fr 1fr; }
+@media (max-width: 880px) { .twocol { grid-template-columns: 1fr; } .twocol .panel.l { border-right: none; } }
+.phead.up { color: var(--green); }
+.phead.dn { color: var(--red); }
+
+/* ---------- injury / flag ticker ---------- */
+.injrow { display: grid; grid-template-columns: 110px 42px 38px 1fr 44px; gap: 8px; align-items: baseline; padding: 4px 10px; border-bottom: 1px dotted #141414; font-size: 10px; }
+.injrow .pn { color: var(--bone); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.injrow .pt { color: var(--amber); font-size: 9px; font-weight: 700; letter-spacing: .3px; }
+.injrow .st { font-size: 9px; font-weight: 700; letter-spacing: .5px; }
+.injrow .st.d { color: var(--amber); }
+.injrow .st.x { color: var(--red); }
+.injrow .nw { color: var(--grey); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.injrow .ch { color: var(--white); font-size: 9.5px; white-space: nowrap; text-align: right; }
+@media (max-width: 560px) { .injrow { grid-template-columns: 1fr 36px 36px 40px; } .injrow .nw { display: none; } }
