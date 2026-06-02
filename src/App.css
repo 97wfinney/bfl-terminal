@@ -139,6 +139,60 @@ tr:hover td { background: var(--sel); }
 .empty { padding: 22px 12px; color: var(--grey); font-size: 11px; text-align: center; letter-spacing: .5px; line-height: 1.7; }
 .empty b { color: var(--red); }
 
+/* ---------- news articles (expandable accordion) ---------- */
+.narticle { border-bottom: 1px solid #0b0b0b; }
+.narticle.open { background: #050505; }
+.nhead {
+  display: grid;
+  grid-template-columns: 16px 116px 1fr auto;
+  gap: 10px;
+  align-items: baseline;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.nhead:hover { background: var(--sel); }
+.narticle.open .nhead { background: var(--sel); }
+.ntog { color: var(--amber); font-weight: 700; font-size: 14px; line-height: 1; justify-self: center; }
+.nhead .src { color: var(--amber); font-weight: 700; font-size: 9px; letter-spacing: .5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nhl { color: var(--bone); font-size: 12px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.narticle.open .nhl { color: var(--amber); white-space: normal; }
+.nhead .tm { color: var(--green); font-size: 9.5px; letter-spacing: .3px; white-space: nowrap; }
+
+/* expanded article body */
+.nbody { padding: 2px 12px 20px; }
+.nart { max-width: 66ch; }
+.nsrc { color: var(--grey); font-size: 9.5px; letter-spacing: .5px; margin: 4px 0 14px; padding-bottom: 9px; border-bottom: 1px dotted #1a1a1a; }
+.nart p { color: var(--white); font-size: 12.5px; line-height: 1.75; margin: 0 0 12px; }
+.nart p:last-of-type { margin-bottom: 0; }
+.nart .nempty { color: var(--grey); }
+.nkp { margin-top: 16px; padding-top: 12px; border-top: 1px dotted #1a1a1a; }
+.nkph { color: var(--amber); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; margin-bottom: 9px; }
+.nkp ul { list-style: none; padding: 0; margin: 0; }
+.nkp li { color: var(--white); font-size: 12px; line-height: 1.6; padding: 4px 0 4px 18px; position: relative; }
+.nkp li::before { content: '▸'; color: var(--green); position: absolute; left: 0; top: 4px; }
+.nyt { display: inline-block; margin-top: 18px; color: var(--grey); font-size: 10.5px; letter-spacing: .5px; text-decoration: none; border-bottom: 1px solid var(--line2); padding-bottom: 2px; }
+.nyt:hover { color: var(--amber); border-color: var(--amber-d); }
+
+@media (max-width: 560px) {
+  .nhead {
+    grid-template-columns: 16px 1fr auto;
+    grid-template-areas: "tog src tm" "tog hl hl";
+    gap: 4px 8px;
+  }
+  .ntog { grid-area: tog; align-self: center; }
+  .nhead .src { grid-area: src; }
+  .nhead .tm { grid-area: tm; }
+  .nhl { grid-area: hl; white-space: normal; }
+  .nart { max-width: none; }
+}
+
 /* ---------- running ticker tape ---------- */
 .tape { border-top: 1px solid var(--line2); background: #070707; overflow: hidden; white-space: nowrap; }
 .tapeInner { display: inline-flex; animation: scroll 80s linear infinite; }
@@ -227,3 +281,45 @@ tr:hover td { background: var(--sel); }
 .injrow .nw { color: var(--grey); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .injrow .ch { color: var(--white); font-size: 9.5px; white-space: nowrap; text-align: right; }
 @media (max-width: 560px) { .injrow { grid-template-columns: 1fr 36px 36px 40px; } .injrow .nw { display: none; } }
+
+/* ---------- Tier 3: league ownership ---------- */
+.t3head { border-top: 2px solid var(--amber-d); }
+.t3grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  grid-template-areas: "own cap tpl" "own diff diff";
+  border-bottom: 1px solid var(--line2);
+}
+.t3own { grid-area: own; border-right: 1px solid var(--line2); }
+.t3cap { grid-area: cap; border-right: 1px solid var(--line2); }
+.t3xi { grid-area: tpl; }
+.t3diff { grid-area: diff; border-top: 1px solid var(--line2); }
+.t3grid .panel { border-bottom: none; }
+@media (max-width: 880px) {
+  .t3grid { grid-template-columns: 1fr; grid-template-areas: "own" "cap" "tpl" "diff"; }
+  .t3own, .t3cap { border-right: none; }
+}
+
+/* captaincy rows with bar */
+.caprow { display: grid; grid-template-columns: 1fr 70px auto; gap: 8px; align-items: center; padding: 4px 10px; border-bottom: 1px dotted #141414; }
+.caprow .who { color: var(--bone); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.caprow .who small { color: var(--grey); font-size: 9px; margin-left: 5px; }
+.cbar { height: 7px; background: #141414; border: 1px solid var(--line); overflow: hidden; }
+.cbarfill { display: block; height: 100%; background: var(--green); opacity: .8; }
+.caprow .val { font-size: 10.5px; font-weight: 700; white-space: nowrap; }
+
+/* template XI pitch */
+.pitchwrap { padding: 10px 12px; }
+.pitch { display: block; width: 100%; height: auto; max-height: 280px; }
+.pitch .pborder { fill: #050d07; stroke: var(--green-d); stroke-width: 1; }
+.pitch .pline { stroke: var(--green-d); stroke-width: 1; opacity: .6; }
+.pitch .pdot circle { fill: var(--amber); stroke: #000; stroke-width: 1; }
+.pitch .pname { fill: var(--bone); font-size: 8px; font-weight: 600; }
+.pitch .pstart { fill: var(--green); font-size: 7px; font-weight: 700; }
+
+/* differentials rows */
+.drow { display: grid; grid-template-columns: 1fr 1.4fr auto; gap: 10px; align-items: baseline; padding: 4px 10px; border-bottom: 1px dotted #141414; }
+.drow .who { color: var(--bone); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.drow .who small { color: var(--grey); font-size: 9px; margin-left: 5px; letter-spacing: .3px; }
+.drow .owners { color: var(--amber); font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.drow .cnt { color: var(--grey); font-size: 9.5px; font-weight: 700; white-space: nowrap; text-align: right; }

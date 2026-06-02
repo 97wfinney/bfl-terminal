@@ -9,7 +9,7 @@ export async function getJSON(path) {
   return res.json();
 }
 
-// Bootstrap snapshots are large, so fetch lazily and cache (PLAYERS + TRANSFERS share one).
+// Bootstrap snapshots are large, so fetch lazily and cache (shared across the homepage Tier-2 panels).
 const _bootCache = {};
 export function getBootstrap(season, gw) {
   const key = `${season}/${gw}`;
@@ -57,8 +57,6 @@ export function CommandBar({ season, clock, sub }) {
 
 const TABS = [
   ['', 'MEMB'],
-  ['players', 'PLAY'],
-  ['transfers', 'XFER'],
   ['news', 'NEWS'],
 ];
 

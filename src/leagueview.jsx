@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { ME, Move, getBootstrap } from './lib.jsx';
+import { ME, Move, getBootstrap, getJSON } from './lib.jsx';
 import {
   Sparkline, PulseBand, FormTable, HitsBoard, BenchWaste, ChipLog, ClosestBattles,
   GwSummary, PriceMovers, FormValue, InjuryTicker,
 } from './homepanels.jsx';
+import OwnerPanels from './ownerpanels.jsx';
 
 const CHIP_SHORT = { wildcard: 'WC', freehit: 'FH', bboost: 'BB', '3xc': 'TC', manager: 'AM' };
 
@@ -21,6 +22,20 @@ export default function LeagueView({ status, league, managers }) {
   }, [status.season, status.current_gw]);
 
   const loadingBoot = boot === null;
+
+  // Tier-3 league-ownership intelligence (insights.json), fetched lazily.
+  const [insights, setInsights] = useState(null);
+  useEffect(() => {
+    let alive = true;
+    setInsights(null);
+    getJSON(`/data/${status.season}/reports/insights.json`)
+      .then((d) => { if (alive) setInsights(d); })
+      .catch(() => { if (alive) setInsights(undefined); }); // undefined = missing/404
+    return () => { alive = false; };
+  }, [status.season]);
+
+  const loadingInsights = insights === null;
+  const hasInsights = insights && Array.isArray(insights.players) && insights.players.length > 0;
 
   return (
     <>
@@ -92,6 +107,14 @@ export default function LeagueView({ status, league, managers }) {
           <ChipLog managers={managers} />
         </div>
       </div>
+
+      {/* Tier 3 — league-ownership intelligence (full width, below standings) */}
+      <div className="phead t3head">OWND <span className="meta">LEAGUE OWNERSHIP · GW{status.current_gw} · {insights?.manager_count ?? managers.length} MANAGERS</span></div>
+      {hasInsights ? (
+        <OwnerPanels insights={insights} />
+      ) : (
+        <div className="panel"><div className="empty">{loadingInsights ? 'LOADING…' : 'OWNERSHIP DATA UNAVAILABLE'}</div></div>
+      )}
 
       {/* Tier 2 — gameweek summary strip */}
       {boot ? (
