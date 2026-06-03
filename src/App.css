@@ -193,6 +193,21 @@ tr:hover td { background: var(--sel); }
   .nart { max-width: none; }
 }
 
+/* desktop: expanded article spans the width as body + key-points/link columns */
+@media (min-width: 880px) {
+  .nart.haskp {
+    display: grid;
+    grid-template-columns: minmax(0, 74ch) 1fr;
+    column-gap: 34px;
+    align-items: start;
+    max-width: none;
+  }
+  .nart.haskp .nartside { border-left: 1px solid var(--line2); padding-left: 22px; }
+  .nart.haskp .nartside .nkp { margin-top: 0; padding-top: 0; border-top: none; }
+  /* no key points → no sidebar; let the body breathe at a comfortable measure */
+  .nart:not(.haskp) { max-width: 78ch; }
+}
+
 /* ---------- running ticker tape ---------- */
 .tape { border-top: 1px solid var(--line2); background: #070707; overflow: hidden; white-space: nowrap; }
 .tapeInner { display: inline-flex; animation: scroll 80s linear infinite; }
@@ -303,6 +318,23 @@ tr:hover td { background: var(--sel); }
 @media (max-width: 560px) {
   .rcards { grid-template-columns: 1fr; }
   .gwswitch { flex-wrap: wrap; }
+}
+
+/* at-a-glance facts sidebar is a desktop-only enhancement (hidden on mobile,
+   where the award cards below already carry the same facts) */
+.rptside { display: none; }
+
+/* desktop: prose + at-a-glance fill the width instead of a narrow left column */
+@media (min-width: 880px) {
+  .rptgrid { display: grid; grid-template-columns: minmax(0, 74ch) 1fr; align-items: start; }
+  .rptbody { max-width: none; }
+  .rptside { display: block; border-left: 1px solid var(--line2); padding: 14px 16px 18px; }
+  .rsh { color: var(--amber); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dotted #1a1a1a; }
+  .gline { display: grid; grid-template-columns: 60px 1fr; gap: 10px; align-items: baseline; padding: 5px 0; border-bottom: 1px dotted #141414; }
+  .gline:last-child { border-bottom: none; }
+  .gline > span { color: var(--grey); font-size: 9px; font-weight: 700; letter-spacing: .5px; }
+  .gline > b { display: flex; justify-content: space-between; gap: 10px; min-width: 0; color: var(--bone); font-size: 12px; font-weight: 700; }
+  .gline > b > i { font-style: normal; font-weight: 700; white-space: nowrap; }
 }
 
 /* sparkline in standings */

@@ -104,14 +104,25 @@ export default function ReportView({ status }) {
         <div className="panel grow"><div className="empty"><b>REPORT UNAVAILABLE</b><br />no recap on record for this gameweek</div></div>
       ) : (
         <>
-          {/* full write-up */}
+          {/* full write-up + (desktop-only) at-a-glance facts filling the right */}
           <div className="panel rptprose">
             <div className="phead">RPRT <span className="meta">THE FULL REPORT · GW{recap.gw}</span></div>
-            <article className="rptbody">
-              {paragraphs(recap.report).length
-                ? paragraphs(recap.report).map((p, i) => <p key={i}>{p}</p>)
-                : <p className="rptempty">No written report available for this gameweek.</p>}
-            </article>
+            <div className="rptgrid">
+              <article className="rptbody">
+                {paragraphs(recap.report).length
+                  ? paragraphs(recap.report).map((p, i) => <p key={i}>{p}</p>)
+                  : <p className="rptempty">No written report available for this gameweek.</p>}
+              </article>
+              <aside className="rptside">
+                <div className="rsh">AT A GLANCE</div>
+                {tr?.leader && <div className="gline"><span>LEADER</span><b>{tr.leader.manager}<i className="tot">{tr.leader.total}</i></b></div>}
+                {motw && <div className="gline"><span>MOTW</span><b>{motw.manager}<i className="up">{motw.net}</i></b></div>}
+                {spoon && <div className="gline"><span>SPOON</span><b>{spoon.manager}<i className="dn">{spoon.net}</i></b></div>}
+                {gwk?.top_scores?.[0] && <div className="gline"><span>TOP GW</span><b>{gwk.top_scores[0].manager}<i>{gwk.top_scores[0].net}</i></b></div>}
+                {form?.hottest && <div className="gline"><span>HOTTEST</span><b>{form.hottest.manager}<i className="up">{form.hottest.last3_net}</i></b></div>}
+                {rec && <div className="gline"><span>RECORD</span><b>{rec.manager}<i>{rec.net} · GW{rec.gw}</i></b></div>}
+              </aside>
+            </div>
           </div>
 
           {/* award / stat cards */}

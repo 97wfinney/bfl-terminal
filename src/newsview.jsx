@@ -49,26 +49,32 @@ export default function NewsView({ feed }) {
 
               {open && (
                 <div className="nbody">
-                  <article className="nart">
-                    {source && <div className="nsrc">SOURCE · {source}</div>}
-                    {paras.length ? (
-                      paras.map((p, j) => <p key={j}>{p}</p>)
-                    ) : (
-                      <p className="nempty">No written summary available for this item.</p>
-                    )}
-                    {points.length > 0 && (
-                      <div className="nkp">
-                        <div className="nkph">KEY POINTS</div>
-                        <ul>
-                          {points.map((pt, j) => <li key={j}>{pt}</li>)}
-                        </ul>
-                      </div>
-                    )}
-                    {it.url && (
-                      <a className="nyt" href={it.url} target="_blank" rel="noreferrer">
-                        Watch on YouTube ↗
-                      </a>
-                    )}
+                  {/* Wrappers are visually transparent when stacked (mobile); on
+                      desktop .nart.haskp lays them out as body + side columns. */}
+                  <article className={`nart${points.length ? ' haskp' : ''}`}>
+                    <div className="nartmain">
+                      {source && <div className="nsrc">SOURCE · {source}</div>}
+                      {paras.length ? (
+                        paras.map((p, j) => <p key={j}>{p}</p>)
+                      ) : (
+                        <p className="nempty">No written summary available for this item.</p>
+                      )}
+                    </div>
+                    <aside className="nartside">
+                      {points.length > 0 && (
+                        <div className="nkp">
+                          <div className="nkph">KEY POINTS</div>
+                          <ul>
+                            {points.map((pt, j) => <li key={j}>{pt}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {it.url && (
+                        <a className="nyt" href={it.url} target="_blank" rel="noreferrer">
+                          Watch on YouTube ↗
+                        </a>
+                      )}
+                    </aside>
                   </article>
                 </div>
               )}
