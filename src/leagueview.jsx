@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ME, Move, getBootstrap, getJSON } from './lib.jsx';
+import { Move, getBootstrap, getJSON } from './lib.jsx';
 import {
   Sparkline, PulseBand, FormTable, HitsBoard, BenchWaste, ChipLog, ClosestBattles,
   GwSummary, PriceMovers, FormValue, InjuryTicker,
@@ -121,7 +121,7 @@ export default function LeagueView({ status, league, managers }) {
             </thead>
             <tbody>
               {managers.map((m, i) => {
-                const cls = [i === 0 ? 'leadrow' : '', m.manager === ME ? 'me' : ''].join(' ').trim();
+                const cls = i === 0 ? 'leadrow' : '';
                 return (
                   <tr key={m.entry} className={cls}>
                     <td className="l rk">{i + 1}</td>

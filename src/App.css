@@ -98,7 +98,6 @@ tr:hover td { background: var(--sel); }
 .hit { color: var(--red); }
 .hit0 { color: var(--grey-d); }
 .leadrow td { background: #0d0a02; }
-.me td { box-shadow: inset 3px 0 0 var(--amber); }
 .chip { font-size: 9px; color: var(--amber); letter-spacing: .5px; }
 .chip.none { color: var(--grey-d); }
 
