@@ -70,7 +70,7 @@ export default function App() {
       <CommandBar
         season={status.season}
         clock={clock}
-        sub={showManager ? `${selected.manager.toUpperCase()} <EQUITY>` : undefined}
+        sub={showManager ? selected.manager.toUpperCase() : undefined}
       />
       {!showManager && <Nav active={activeNav} />}
       {showManager ? (

@@ -43,7 +43,6 @@ export function CommandBar({ season, clock, sub }) {
   return (
     <div className="cmd">
       <span className="tk">BFL</span>
-      <span className="ix">&lt;INDEX&gt;</span>
       <span className="q">{sub || 'BIDDENHAM FANTASY LEAGUE'}</span>
       <span className="cur" />
       <span className="right">

@@ -21,8 +21,7 @@
   overflow: hidden;
 }
 .cmd .tk { color: var(--amber); font-weight: 700; }
-.cmd .ix { color: var(--grey); margin: 0 7px; }
-.cmd .q { color: var(--bone); }
+.cmd .q { color: var(--bone); margin-left: 7px; }
 .cmd .cur { display: inline-block; width: 7px; height: 13px; background: var(--amber); margin-left: 6px; vertical-align: middle; animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 .cmd .right { margin-left: auto; display: flex; align-items: center; gap: 16px; color: var(--grey); font-weight: 500; }
