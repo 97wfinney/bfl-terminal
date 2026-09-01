@@ -16,8 +16,15 @@ Read this before changing anything. It is a contract, not background reading.
 
 ## Data contract — do NOT break
 
-The app fetches from the `REPO` base URL in `src/lib.jsx`
-(`https://raw.githubusercontent.com/97wfinney/bfl-data/main`):
+The app fetches same-origin from `/data/*`. The `REPO` base URL in
+`src/lib.jsx` is now the empty string, and `vercel.json` rewrites
+`/data/:path*` to
+`https://raw.githubusercontent.com/97wfinney/bfl-data/main/data/:path*`.
+This routes the data through our own domain, which keeps it reachable on
+networks that block raw.githubusercontent.com. bfl-data is still the source
+of truth and the paths below are unchanged. There is no Vite dev proxy, so
+`npm run dev` returns 404 for data — that is expected; test data changes
+against a deploy.
 
 - `/data/status.json` → `{ season, current_gw, finished, updated_at }`.
   The entry point: it tells the app which season is live.
@@ -58,6 +65,7 @@ contract**. If a feature needs a field that isn't here, that's a change in the
 - `src/index.css` — global reset, font import, CSS variables (the palette).
 - `src/App.jsx` — fetches data once, hash-routes between views, renders the shared CommandBar.
 - `src/lib.jsx` — shared: `REPO`, `getJSON`, formatters, `Move`, `CommandBar`.
+- `vercel.json` — rewrite proxying `/data/*` to bfl-data. Keep in sync with `REPO`.
 - `src/LeagueView.jsx` — standings table + news wire + scrolling ticker tape.
 - `src/ManagerView.jsx` — manager detail: points chart, season stats, chip timeline, previous seasons, GW log.
 - `src/App.css` — all component styles.
