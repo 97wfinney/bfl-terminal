@@ -1,6 +1,6 @@
 // Shared helpers, constants, and small UI pieces used across views.
 
-export const REPO = 'https://raw.githubusercontent.com/97wfinney/bfl-data/main';
+export const REPO = '';
 
 export async function getJSON(path) {
   const res = await fetch(`${REPO}${path}?t=${Date.now()}`, { cache: 'no-store' });
